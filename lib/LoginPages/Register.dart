@@ -195,13 +195,11 @@ class _RegisterState extends State<Register> {
 
   Future<void> _register() async {
     if (_email.text == "" || _email.text == null) {
-      General.infoAlert(context,
-          title: ("email_required"), type: AlertType.warning);
+      General.infoAlert(title: ("email_required"), type: AlertType.warning);
     } else if (_password.text == "" || _password.text == null) {
-      General.infoAlert(context,
-          title: ("pass_required"), type: AlertType.warning);
+      General.infoAlert(title: ("pass_required"), type: AlertType.warning);
     } else if (_username.text == "" || _username.text == null) {
-      General.infoAlert(context,
+      General.infoAlert(
           title: ("Username is Required"),
           // text: onError.toString(),
           type: AlertType.warning);
@@ -233,7 +231,7 @@ class _RegisterState extends State<Register> {
           color: Constants.color_DANGER,
         );
       } on PlatformException catch (e) {
-        General.infoAlert(context,
+        General.infoAlert(
             text: ("${e.code} ${e.message}  ${e.details}"),
             type: AlertType.error);
       } catch (e) {

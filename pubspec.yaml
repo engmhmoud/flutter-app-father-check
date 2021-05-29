@@ -21,7 +21,6 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  font_awesome_flutter: ^8.5.0
   firebase_core: ^1.2.0
   firebase_auth: ^1.2.0
   cloud_firestore: ^2.2.0
@@ -40,6 +39,8 @@ dependencies:
   loading_animations: "^2.1.0"
   fluttertoast: ^8.0.7
   connectivity: ^3.0.6
+  font_awesome_flutter: ^9.0.0
+  progress_dialog: ^1.2.4
 dev_dependencies:
   flutter_test:
     sdk: flutter

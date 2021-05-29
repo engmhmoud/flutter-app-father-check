@@ -1,6 +1,7 @@
 import 'package:after_layout/after_layout.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:parent_check_app/General/General.dart';
 
 import 'package:parent_check_app/LoginPages/home.dart';
 import 'package:parent_check_app/controller/UserDAO.dart';
@@ -97,22 +98,17 @@ class _IntroState extends State<Intro> with AfterLayoutMixin<Intro> {
     );
   }
 
-  void toPage(Widget widget) {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => widget));
-  }
-
   Future<void> login() async {
     UserDAO dao = UserDAO();
     // try {
     dao.currentUser = await dao.getFireUser();
     if (dao.currentUser == null)
-      toPage(Login2());
+      toPage(context, Login2());
     else
       await dao.getUser();
     if (MainData.user == null) {
-      toPage(Login2());
+      toPage(context, Login2());
     } else
-      toPage(Home());
+      toPage(context, Home());
   }
 }

@@ -23,13 +23,24 @@ class UserDAO with ChangeNotifier {
 
   Future<User?> getFireUser() async {
     notifyListeners();
-    return _auth.currentUser;
+    if (_currentUser != null) return _currentUser;
+
+    if (_auth.currentUser != null) {
+      _currentUser = _auth.currentUser;
+      return currentUser;
+    }
+    var result = (await _auth.authStateChanges().toList());
+    if (result.length > 0) {
+      _currentUser = result[0];
+      return _currentUser;
+    }
   }
 
   Future<void> getUser() async {
-    MainData.user = model.User.fromSnapshot(
+    var user = model.User.fromSnapshot(
         await getUserFromCollection(currentUser?.email ?? ""), currentUser!);
-    if (MainData.user == null) return;
+    MainData.user = user;
+    addToLocalStore(user);
   }
 
   // wrapping the firebase calls
@@ -77,22 +88,38 @@ class UserDAO with ChangeNotifier {
     await _store.doc(email).delete();
   }
 
-  Future<void> addUser(model.User user) async {
-    var loggedInUser = await _auth.createUserWithEmailAndPassword(
-        email: user.email ?? "", password: user.password ?? "");
-    //to send email Verified
-    // await loggedInUser.user.sendEmailVerification();
+  Future<bool?> addUser(model.User user) async {
+    var error = (e) {
+      throw Exception(e);
+    };
+    try {
+      var loggedInUser = await _auth.createUserWithEmailAndPassword(
+          email: user.email ?? "", password: user.password ?? "");
+      //to send email Verified
+      // await loggedInUser.user.sendEmailVerification();
 
-    await addUserToCollection(
-        user, loggedInUser.user?.email ?? user.email ?? "");
-    await loginUser(
-        email: loggedInUser.user?.email ?? user.email ?? "",
-        password: user.password ?? "");
+      await addUserToCollection(
+          user, loggedInUser.user?.email ?? user.email ?? "");
+      await loginUser(
+          email: loggedInUser.user?.email ?? user.email ?? "",
+          password: user.password ?? "");
 
-    MainData.user = user;
-    _currentUser = loggedInUser.user ?? currentUser;
+      MainData.user = user;
+      _currentUser = loggedInUser.user;
 
-    addToLocalStore(user);
+      addToLocalStore(user);
+      return true;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      } else {
+        return error(e);
+      }
+    } catch (e) {
+      return error(e);
+    }
   }
 
   Future<bool> signOut() async {

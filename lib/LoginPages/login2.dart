@@ -77,7 +77,6 @@ class _Login2State extends State<Login2> {
     print("login trioed");
     if (!_isButtonDisabled) if (_email.text == "" || _email.text == null) {
       General.infoAlert(
-        context,
         title: ("Email is Required"),
         text: null,
         type: AlertType.info,
@@ -85,7 +84,6 @@ class _Login2State extends State<Login2> {
       );
     } else if (_password.text == "" || _password.text == null) {
       General.infoAlert(
-        context,
         title: ("Password is Required"),
         text: null,
         type: AlertType.info,
@@ -106,12 +104,11 @@ class _Login2State extends State<Login2> {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Home()));
       } on PlatformException catch (e) {
-        General.infoAlert(context,
+        General.infoAlert(
             text: ("${e.code} ${e.details} ${e.message} ${e.stacktrace}"),
             type: AlertType.error);
       } catch (e) {
-        General.infoAlert(context,
-            text: "Login failed ${e}", type: AlertType.error);
+        General.infoAlert(text: "Login failed ${e}", type: AlertType.error);
       } finally {
         if (mounted)
           setState(() {
