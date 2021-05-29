@@ -16,8 +16,7 @@ class User {
     required this.password,
   });
 
-  User.fromSnapshot(
-      DocumentSnapshot<Map<String, dynamic>> snapshot, auth.User fireUser) {
+  User.fromSnapshot(DocumentSnapshot<Object?> snapshot, auth.User fireUser) {
     firebaseUser = fireUser;
     // if (snapshot == null || snapshot.data == null || !snapshot.exists) {
     //   username = fireUser.displayName;

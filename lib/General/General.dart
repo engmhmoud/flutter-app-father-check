@@ -73,12 +73,13 @@ class General {
       {String? title, String? text, AlertType type = AlertType.info}) async {
     var myCase = text ?? title;
 
-    late Color color;
+    Color color;
     if (AlertType.error == type)
       color = Constants.color_DANGER;
     else if (AlertType.info == type)
       color = Constants.color_WARNING;
-    else if (AlertType.success == type) color = Constants.color_INFO;
+    else
+      color = Constants.color_INFO;
     Fluttertoast.showToast(
         msg: myCase ?? "",
         toastLength: Toast.LENGTH_LONG,

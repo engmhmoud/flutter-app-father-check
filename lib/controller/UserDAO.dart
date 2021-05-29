@@ -7,8 +7,9 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 
 class UserDAO with ChangeNotifier {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _store = FirebaseFirestore.instance;
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final FirebaseFirestore _store = FirebaseFirestore.instance;
+  static final CollectionReference _usersColec = _store.collection("user");
 
   User? _currentUser;
 
@@ -29,11 +30,13 @@ class UserDAO with ChangeNotifier {
       _currentUser = _auth.currentUser;
       return currentUser;
     }
-    var result = (await _auth.authStateChanges().toList());
-    if (result.length > 0) {
-      _currentUser = result[0];
-      return _currentUser;
-    }
+    // var result = (await _auth.authStateChanges().toList());
+    // if (result.length > 0) {
+    //   _currentUser = result[0];
+    //   return _currentUser;
+    // }
+
+    return null;
   }
 
   Future<void> getUser() async {
@@ -72,20 +75,19 @@ class UserDAO with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getUserFromCollection(
-      String email) {
-    return _store.doc(email).get();
+  Future<DocumentSnapshot<Object?>> getUserFromCollection(String email) {
+    return _usersColec.doc(email).get();
   }
 
   Future<void> addUserToCollection(model.User user, String email) async {
     print("in addUserToCollection");
-    await _store.doc(email).set(user.toJSON());
+    await _usersColec.doc(email).set(user.toJSON());
   }
 
   Future<void> deleteUserfromCollection({required String email}) async {
     print("in deleteUserfromCollection");
 
-    await _store.doc(email).delete();
+    await _usersColec.doc(email).delete();
   }
 
   Future<bool?> addUser(model.User user) async {
@@ -93,19 +95,19 @@ class UserDAO with ChangeNotifier {
       throw Exception(e);
     };
     try {
-      var loggedInUser = await _auth.createUserWithEmailAndPassword(
-          email: user.email ?? "", password: user.password ?? "");
+      // var loggedInUser = await _auth.createUserWithEmailAndPassword(
+      //     email: user.email ?? "", password: user.password ?? "");
+      var loggedInUser = _auth.currentUser;
       //to send email Verified
       // await loggedInUser.user.sendEmailVerification();
 
-      await addUserToCollection(
-          user, loggedInUser.user?.email ?? user.email ?? "");
+      await addUserToCollection(user, user?.email ?? user.email ?? "");
       await loginUser(
-          email: loggedInUser.user?.email ?? user.email ?? "",
+          email: user?.email ?? user.email ?? "",
           password: user.password ?? "");
 
       MainData.user = user;
-      _currentUser = loggedInUser.user;
+      _currentUser = loggedInUser;
 
       addToLocalStore(user);
       return true;
@@ -159,7 +161,8 @@ class UserDAO with ChangeNotifier {
   Future<void> addToLocalStore(model.User user) async {
     // to Store data locally to auto login if firebase doesnot login automatically
     // or to get user data from locally without needs of firestore
-    var box = Hive.box('myBox');
+    var box = await Hive.openBox("myBox");
+    // var box = Hive.box('myBox');
     await box.put('email', user.email);
     await box.put('password', user.password);
     await box.put('id', user.id);

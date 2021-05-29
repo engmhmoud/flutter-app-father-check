@@ -22,15 +22,15 @@ class _Login2State extends State<Login2> {
   bool _isButtonDisabled = false;
 
   var textStyle = TextStyle(
-    height: 10,
-    color: Colors.white70,
-    fontSize: 16,
+    height: 2,
+    color: Colors.black,
+    fontSize: 12,
     fontWeight: FontWeight.w400,
   );
   var hintStyle = TextStyle(
-    height: 10,
-    color: Colors.white54,
-    fontSize: 12,
+    height: 2,
+    color: Colors.black,
+    fontSize: 10,
   );
   @override
   Widget build(BuildContext context) {
@@ -42,29 +42,79 @@ class _Login2State extends State<Login2> {
       body: ListView(
         children: [
           SizedBox(
-            height: 40,
+            height: 20,
           ),
           Container(
-            // color: Colors.red,
-            margin: EdgeInsets.only(left: 20, right: 20),
+            decoration: BoxDecoration(
+                border: Border.all(
+                    color: Colors.black38, width: 2, style: BorderStyle.solid),
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            margin: EdgeInsets.only(left: 10, right: 10),
             child: Container(
               // margin: EdgeInsets.only,
               child: TextField(
                 cursorWidth: 3,
                 cursorRadius: Radius.circular(3),
-                // expands: true,
-                // minLines: null,
-                // maxLines: null,
                 onSubmitted: (_) {
                   _login();
                 },
                 controller: _email,
                 keyboardType: TextInputType.emailAddress,
                 style: textStyle,
-                strutStyle: StrutStyle(height: 16),
                 decoration: buildInputDecoration(hintText: "Email"),
               ),
             ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(
+                    color: Colors.black38, width: 2, style: BorderStyle.solid),
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            // color: Colors.red,
+            margin: EdgeInsets.only(left: 10, right: 10),
+
+            child: Container(
+              child: TextField(
+                cursorWidth: 3,
+                cursorRadius: Radius.circular(3),
+                onSubmitted: (_) {
+                  _login();
+                },
+                controller: _password,
+                keyboardType: TextInputType.visiblePassword,
+                style: textStyle,
+                decoration: buildInputDecoration(hintText: "Passoword"),
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.all(30),
+            width: 100,
+            child: ElevatedButton(
+                onPressed: _login,
+                child: Container(
+                  child: Text(
+                    "Login",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 120, right: 120, top: 20),
+            width: 100,
+            child: ElevatedButton(
+                onPressed: _register,
+                child: Container(
+                  child: Text(
+                    "Register",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                )),
           ),
         ],
       ),
@@ -119,15 +169,13 @@ class _Login2State extends State<Login2> {
     }
   }
 
-  void _register(BuildContext context) {
+  void _register() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Register()));
+        context, MaterialPageRoute(builder: (context) => Register2()));
   }
 
   InputDecoration buildInputDecoration(
       {required String hintText, Widget? suffixIcon}) {
-    double contPdValue = 10;
-    var contPadd = EdgeInsets.all(contPdValue);
     // if (removeLeftPadding) {
     //   contPadd = EdgeInsets.only(
     //       left: -global.getIconSizeMore(),
@@ -136,7 +184,6 @@ class _Login2State extends State<Login2> {
     //       top: contPdValue);
     // }
     return InputDecoration(
-      contentPadding: contPadd,
       focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Constants.color_INFO),
           borderRadius: BorderRadius.circular(8)),

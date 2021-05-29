@@ -99,6 +99,7 @@ class _IntroState extends State<Intro> with AfterLayoutMixin<Intro> {
   }
 
   Future<void> login() async {
+    print("in login --------------------");
     UserDAO dao = UserDAO();
     // try {
     dao.currentUser = await dao.getFireUser();
