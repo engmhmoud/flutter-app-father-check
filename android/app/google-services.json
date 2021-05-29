@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "913690804621",
+    "firebase_url": "https://rfid-20cfa-default-rtdb.firebaseio.com",
+    "project_id": "rfid-20cfa",
+    "storage_bucket": "rfid-20cfa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:913690804621:android:70f018e82e08f27de63dc4",
+        "android_client_info": {
+          "package_name": "com.abdallah.rfid_covid20"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "913690804621-tcle4tepcutr9pfidr2nv6n77eu0revt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7WLOwpOPlIw37_napqJJ1xS7O0Nnz9oM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "913690804621-tcle4tepcutr9pfidr2nv6n77eu0revt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:913690804621:android:163f2fc7c879b356e63dc4",
+        "android_client_info": {
+          "package_name": "com.example.parent_check_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "913690804621-tcle4tepcutr9pfidr2nv6n77eu0revt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7WLOwpOPlIw37_napqJJ1xS7O0Nnz9oM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "913690804621-tcle4tepcutr9pfidr2nv6n77eu0revt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

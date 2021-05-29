@@ -12,8 +12,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:parent_check_app/General/Constants.dart';
-import 'package:parent_check_app/LoginPages/Intro.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class General {

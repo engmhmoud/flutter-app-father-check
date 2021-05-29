@@ -1,8 +1,7 @@
 import 'package:after_layout/after_layout.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:parent_check_app/General/General.dart';
-import 'package:parent_check_app/LoginPages/Login.dart';
+
 import 'package:parent_check_app/LoginPages/home.dart';
 import 'package:parent_check_app/controller/UserDAO.dart';
 

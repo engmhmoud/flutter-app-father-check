@@ -1,17 +1,14 @@
-import 'dart:io';
 import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:parent_check_app/General//Constants.dart';
 import 'package:parent_check_app/General//Error/ErrorList.dart';
 import 'package:parent_check_app/General//General.dart';
-import 'package:parent_check_app/General//Services.dart';
 import 'package:parent_check_app/LoginPages/Intro.dart';
 
 import 'package:flutter/material.dart';
 import 'package:parent_check_app/Model/User.dart';
 import 'package:parent_check_app/controller/UserDAO.dart';
-import 'package:parent_check_app/main.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter/services.dart';
 

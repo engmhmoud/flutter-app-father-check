@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-enum DeviceScreenType { SM, MD, LG }
 void main() {
   runApp(MyApp());
 }
