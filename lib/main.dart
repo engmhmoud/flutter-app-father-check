@@ -1,11 +1,8 @@
-import 'package:after_layout/after_layout.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:parent_check_app/General/General.dart';
 import 'package:parent_check_app/LoginPages/Intro.dart';
-import 'package:parent_check_app/LoginPages/login2.dart';
-import 'package:parent_check_app/controller/UserDAO.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -16,12 +13,18 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       type: AlertType.info);
 }
 
-Future<void> main() async {
+initFirebase() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+}
 
-  runApp(Intro());
+Future<void> main() async {
+  await initFirebase();
+  runApp(MaterialApp(
+    home: Intro(),
+    debugShowCheckedModeBanner: false,
+  ));
 }
 
 // class Intro extends StatefulWidget {

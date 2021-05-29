@@ -24,12 +24,12 @@ class _VerificationState extends State<Verification> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/images/login.png"),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(.4), BlendMode.dstATop))),
+        // decoration: BoxDecoration(
+        //     image: DecorationImage(
+        //         image: AssetImage("assets/images/login.png"),
+        //         fit: BoxFit.cover,
+        //         colorFilter: ColorFilter.mode(
+        //             Colors.black.withOpacity(.4), BlendMode.dstATop))),
         child: ListView(
           children: <Widget>[
             SizedBox(

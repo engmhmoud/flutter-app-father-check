@@ -82,13 +82,13 @@ class _RegisterState extends State<Register> {
 
           body: Container(
               height: context.size!.height,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                image: AssetImage("assets/images/login.png"),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(1), BlendMode.color),
-              )),
+              // decoration: BoxDecoration(
+              //     image: DecorationImage(
+              //   image: AssetImage("assets/images/login.png"),
+              //   fit: BoxFit.cover,
+              //   colorFilter: ColorFilter.mode(
+              //       Colors.black.withOpacity(1), BlendMode.color),
+              // )),
               child: SingleChildScrollView(
                 physics: ScrollPhysics(),
                 child: Column(children: <Widget>[

@@ -50,12 +50,12 @@ class _IntroState extends State<Intro> with AfterLayoutMixin<Intro> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/images/login.png"),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(1), BlendMode.dstATop))),
+        // decoration: BoxDecoration(
+        //     image: DecorationImage(
+        //         image: AssetImage("assets/images/login.png"),
+        //         fit: BoxFit.cover,
+        //         colorFilter: ColorFilter.mode(
+        //             Colors.black.withOpacity(1), BlendMode.dstATop))),
         child: Column(
           children: <Widget>[
             SizedBox(

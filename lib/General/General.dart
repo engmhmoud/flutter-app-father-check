@@ -15,7 +15,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:loading_animations/loading_animations.dart';
 
 import 'package:parent_check_app/General/Constants.dart';
-import 'package:progress_dialog/progress_dialog.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class General {
@@ -220,69 +220,13 @@ class General {
 // //       ),
 // //     );
 
-  static ProgressDialog loadingCoponent(BuildContext context) {
-    // var higth = context.size.width / 5;
-    var pr = ProgressDialog(context,
-        type: ProgressDialogType.Normal, isDismissible: true, showLogs: false);
-
-    pr.style(
-        message: 'Loading',
-        borderRadius: 12.0,
-        backgroundColor: Colors.white,
-        progressWidget: LoadingRotating.square(
-          itemBuilder: (c, i) {
-            return Icon(
-              Icons.sync,
-              color: Constants.color_INFO,
-              size: 40,
-            );
-          },
-        ),
-        elevation: 10.0,
-        insetAnimCurve: Curves.easeInOut,
-        progress: 0.0,
-        maxProgress: 100.0,
-        messageTextStyle: TextStyle(color: Constants.color_INFO, fontSize: 12));
-    return pr;
-//===========================================
-
-    // return showDialog(
-    //     context: context,
-    //     builder: (c) {
-    //       return ConstrainedBox(
-    //         constraints: BoxConstraints(maxWidth: higth),
-    //         // width: higth,
-    //         child: AlertDialog(
-    //             contentPadding: EdgeInsets.all(0),
-    //             shape:
-    //                 // BeveledRectangleBorder(borderRadius: BorderRadius.circular(10)),
-    //                 ContinuousRectangleBorder(
-    //                     borderRadius: BorderRadius.circular(30)),
-    //             elevation: 0,
-    //             content: Container(
-    //               height: higth,
-    //               child: Column(
-    //                 children: <Widget>[
-    //                   LoadingRotating.square(
-    //                     itemBuilder: (c, i) {
-    //                       return Icon(
-    //                         Icons.sync,
-    //                         color: Constants.color_INFO,
-    //                         size: 40,
-    //                       );
-    //                     },
-    //                   ),
-    //                   Text(
-    //                     "Loading",
-    //                     style:
-    //                         TextStyle(color: Constants.color_INFO, fontSize: 12),
-    //                   )
-    //                 ],
-    //               ),
-    //             )),
-    //       );
-    //     });
-  }
+  // static   loadingCoponent(BuildContext context) {
+  //     return showDialog(
+  //     context: context,
+  //     builder: (context) =>
+  //         ProgressDialog(getFuture()),
+  //   );
+  // }
 
 //   static Widget profileImageByFunc(
 //     File file,
