@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -8,6 +9,20 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        pdo();
+      }),
+      appBar: AppBar(
+        title: Text("Home"),
+      ),
+      body: ListView(
+        children: [],
+      ),
+    );
+  }
+
+  Future<void> pdo() async {
+    print(await FirebaseMessaging.instance.getToken());
   }
 }

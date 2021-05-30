@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter/material.dart';
+// import 'package:hive/hive.dart';
 import 'package:parent_check_app/Model/User.dart' as model;
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +11,7 @@ class UserDAO with ChangeNotifier {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static final FirebaseFirestore _store = FirebaseFirestore.instance;
   static final CollectionReference _usersColec = _store.collection("user");
+  static final CollectionReference _tempOfUserColec = _store.collection("data");
 
   User? _currentUser;
 
@@ -17,6 +19,13 @@ class UserDAO with ChangeNotifier {
       this._currentUser ?? FirebaseAuth.instance.currentUser;
 
   set currentUser(User? value) => this._currentUser = value;
+  listen() async {
+    var str = _usersColec.doc(MainData.user!.email).snapshots();
+    str.listen((event) {
+      event.get("temp");
+      event.get("date");
+    });
+  }
 
   Future<void> forgetPassword(String email) async {
     await _auth.sendPasswordResetEmail(email: email);
@@ -43,7 +52,7 @@ class UserDAO with ChangeNotifier {
     var user = model.User.fromSnapshot(
         await getUserFromCollection(currentUser?.email ?? ""), currentUser!);
     MainData.user = user;
-    addToLocalStore(user);
+    // addToLocalStore(user);
   }
 
   // wrapping the firebase calls
@@ -76,7 +85,7 @@ class UserDAO with ChangeNotifier {
   }
 
   Future<DocumentSnapshot<Object?>> getUserFromCollection(String email) {
-    return _usersColec.doc(email).get();
+    return _usersColec.doc(email.toLowerCase()).get();
   }
 
   Future<void> addUserToCollection(model.User user, String email) async {
@@ -91,37 +100,35 @@ class UserDAO with ChangeNotifier {
   }
 
   Future<bool?> addUser(model.User user) async {
-    var error = (e) {
-      throw Exception(e);
-    };
-    try {
-      // var loggedInUser = await _auth.createUserWithEmailAndPassword(
-      //     email: user.email ?? "", password: user.password ?? "");
-      var loggedInUser = _auth.currentUser;
-      //to send email Verified
-      // await loggedInUser.user.sendEmailVerification();
+    // var error = (e) {
+    //   throw Exception(e);
+    // };
+    // try {
+    var loggedInUser = await _auth.createUserWithEmailAndPassword(
+        email: user.email ?? "", password: user.password ?? "");
+    // var loggedInUser = _auth.currentUser;
+    //to send email Verified
+    // await loggedInUser.user.sendEmailVerification();
 
-      await addUserToCollection(user, user?.email ?? user.email ?? "");
-      await loginUser(
-          email: user?.email ?? user.email ?? "",
-          password: user.password ?? "");
+    await addUserToCollection(user, user.email!.toLowerCase());
+    await loginUser(email: user.email ?? "", password: user.password ?? "");
 
-      MainData.user = user;
-      _currentUser = loggedInUser;
+    MainData.user = user;
+    _currentUser = loggedInUser.user;
 
-      addToLocalStore(user);
-      return true;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      } else {
-        return error(e);
-      }
-    } catch (e) {
-      return error(e);
-    }
+    // addToLocalStore(user);
+    return true;
+    // } on FirebaseAuthException catch (e) {
+    //   if (e.code == 'weak-password') {
+    //     print('The password provided is too weak.');
+    //   } else if (e.code == 'email-already-in-use') {
+    //     print('The account already exists for that email.');
+    //   } else {
+    //     return error(e);
+    //   }
+    // } catch (e) {
+    //   return error(e);
+    // }
   }
 
   Future<bool> signOut() async {
@@ -129,7 +136,7 @@ class UserDAO with ChangeNotifier {
     if ((_auth.currentUser) != null) {
       await _auth.signOut();
       MainData.user = null;
-      removeFromLocalStore();
+      // removeFromLocalStore();
       return true;
     }
     if ((_auth.currentUser) != null) {
@@ -143,38 +150,38 @@ class UserDAO with ChangeNotifier {
     await _auth.sendPasswordResetEmail(email: email);
   }
 
-  Future<model.User> getFromLocalStore() async {
-    var box = Hive.box('myBox');
-    var email = await box.get('email');
-    var password = await box.get('password');
-    var id = await box.get('id');
-    var username = await box.get('username');
+  // Future<model.User> getFromLocalStore() async {
+  //   var box = Hive.box('myBox');
+  //   var email = await box.get('email');
+  //   var password = await box.get('password');
+  //   var id = await box.get('id');
+  //   var username = await box.get('username');
 
-    return model.User(
-        email: email,
-        password: password,
-        id: id,
-        username: username,
-        firebaseUser: currentUser);
-  }
+  //   return model.User(
+  //       email: email,
+  //       password: password,
+  //       id: id,
+  //       username: username,
+  //       firebaseUser: currentUser);
+  // }
 
-  Future<void> addToLocalStore(model.User user) async {
-    // to Store data locally to auto login if firebase doesnot login automatically
-    // or to get user data from locally without needs of firestore
-    var box = await Hive.openBox("myBox");
-    // var box = Hive.box('myBox');
-    await box.put('email', user.email);
-    await box.put('password', user.password);
-    await box.put('id', user.id);
-    await box.put('username', user.username);
-    await box.close();
-  }
+  // Future<void> addToLocalStore(model.User user) async {
+  //   // to Store data locally to auto login if firebase doesnot login automatically
+  //   // or to get user data from locally without needs of firestore
+  //   var box = await Hive.openBox("myBox");
+  //   // var box = Hive.box('myBox');
+  //   await box.put('email', user.email);
+  //   await box.put('password', user.password);
+  //   await box.put('id', user.id);
+  //   await box.put('username', user.username);
+  //   await box.close();
+  // }
 
-  Future<void> removeFromLocalStore() async {
-    var box = Hive.box('myBox');
-    await box.deleteAll(["email", "password", "id", "username"]);
-    await box.close();
-  }
+  // Future<void> removeFromLocalStore() async {
+  //   var box = Hive.box('myBox');
+  //   await box.deleteAll(["email", "password", "id", "username"]);
+  //   await box.close();
+  // }
 }
 
 class MainData {

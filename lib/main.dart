@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:parent_check_app/General/General.dart';
 import 'package:parent_check_app/LoginPages/Intro.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -25,13 +21,14 @@ initFirebase() async {
 
 Future<void> allInt() async {
   await initFirebase();
-  Directory appDocDir = await getApplicationDocumentsDirectory();
-  String appDocPath = appDocDir.path;
-  Hive.init(appDocPath);
+  // Directory appDocDir = await getApplicationDocumentsDirectory();
+  // String appDocPath = appDocDir.path;
+  // Hive.init(appDocPath);
 }
 
 Future<void> main() async {
-  allInt();
+  await initFirebase();
+  await Firebase.initializeApp();
   runApp(MaterialApp(
     home: Intro(),
     debugShowCheckedModeBanner: false,

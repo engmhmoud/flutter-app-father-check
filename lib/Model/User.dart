@@ -18,16 +18,11 @@ class User {
 
   User.fromSnapshot(DocumentSnapshot<Object?> snapshot, auth.User fireUser) {
     firebaseUser = fireUser;
-    // if (snapshot == null || snapshot.data == null || !snapshot.exists) {
-    //   username = fireUser.displayName;
-    //   email = fireUser.email;
-    // } else
-    {
-      this.email = snapshot.id;
-      this.username = snapshot.get("username");
-      this.id = snapshot.get("id");
-      this.password = snapshot.get("password");
-    }
+
+    this.email = snapshot.id;
+    this.username = snapshot.get("username");
+    this.id = snapshot.get("id");
+    this.password = snapshot.get("password");
   }
 
   toJSON() {
@@ -42,6 +37,6 @@ class User {
 
   @override
   String toString() {
-    return "username: $username , " + "password: $password," + "id: $id," + "";
+    return "username: $username , " + "password: $password," + "id: $id,";
   }
 }

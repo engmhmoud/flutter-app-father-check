@@ -1,14 +1,3 @@
-// import 'dart:io';
-
-// // import 'package:country_pickers/country.dart';
-// // import 'package:country_pickers/utils/utils.dart';
-// import 'package:flutter/material.dart';
-// import 'package:intl/intl.dart';
-// import 'Constants.dart';
-// import 'package:rflutter_alert/rflutter_alert.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// import 'package:flutter/material.dart' as m;
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -19,21 +8,6 @@ import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class General {
-//   static Widget icon_App(double size) {
-//     return Container(
-//       width: size,
-//       height: size,
-//       child: Image(
-//         image: AssetImage("assets/images/icon.png"),
-//         fit: BoxFit.cover,
-//       ),
-//       decoration: BoxDecoration(
-//           border: Border.all(
-//               color: Colors.white, width: 92 / 8, style: BorderStyle.solid),
-//           borderRadius: BorderRadius.all(Radius.circular(10))),
-//     );
-//   }
-
   static Widget getEyeIcon(bool check, double iconSize) {
     return !check
         ? Icon((FontAwesomeIcons.solidEye),
@@ -46,28 +20,6 @@ class General {
             size: iconSize,
           );
   }
-
-//   static Widget fullIcon_App(double size) {
-//     return Container(
-//       width: size,
-//       height: size,
-//       child: Image(
-//         image: AssetImage("assets/images/iconWithWord.png"),
-//       ),
-//     );
-//   }
-
-//   static Widget loadingCircle({double? size}) {
-//     return Center(child: LoadingRotating.square(
-//       itemBuilder: (c, i) {
-//         return Icon(
-//           FontAwesomeIcons.spinner,
-//           color: Constants.color_INFO,
-//           size: size ?? 40,
-//         );
-//       },
-//     ));
-//   }
 
   static Future<void> infoAlert(
       {String? title, String? text, AlertType type = AlertType.info}) async {
