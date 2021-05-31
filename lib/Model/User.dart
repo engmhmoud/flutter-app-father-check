@@ -26,15 +26,17 @@ class User {
     this.username = snapshot.get("username");
     this.id = snapshot.get("id");
     this.password = snapshot.get("password");
-    this.temp = snapshot.get("temp");
-    // this.temp = snapshot.get("temp").toDate();
-    if (snapshot.get("time") != null) {
-      final Timestamp _timestamp = snapshot.get("time") as Timestamp;
+    this.temp = General.tryValue(snapshot, "temp");
+
+    var _t_fire = General.tryValue(snapshot, "time");
+    if (_t_fire == null)
+      this.time = null;
+    else {
+      final Timestamp _timestamp =
+          General.tryValue(snapshot, "time") as Timestamp;
       final DateTime _time = _timestamp.toDate();
       this.time = _time;
     }
-
-    // this.time =Service. snapshot.get("time");
   }
 
   toJSON() {

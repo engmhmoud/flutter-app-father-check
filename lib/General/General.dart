@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,6 +9,21 @@ import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class General {
+  static tryValue(DocumentSnapshot<Object?> snapshot, String valueName) {
+    try {
+      return snapshot.get(valueName);
+    } on StateError {
+      return null;
+    }
+  }
+
+  static tryValueNotNull(DocumentSnapshot<Object?> snapshot, String valueName) {
+    try {
+      return snapshot.get(valueName);
+    } on StateError {}
+    return "";
+  }
+
   static Widget getEyeIcon(bool check, double iconSize) {
     return !check
         ? Icon((FontAwesomeIcons.solidEye),

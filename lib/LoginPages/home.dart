@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:parent_check_app/General/General.dart';
 import 'package:parent_check_app/controller/UserDAO.dart';
 
 class Home extends StatefulWidget {
@@ -10,18 +11,16 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late Stream<DocumentSnapshot> str;
+
   @override
   void initState() {
     super.initState();
-    listen();
+    // listen();
   }
 
   listen() async {
     str = UserDAO.usersColection.doc(MainData.user!.email).snapshots();
-    str.listen((event) {
-      event.get("temp");
-      event.get("date");
-    });
+    str.listen((event) {});
   }
 
   @override
@@ -36,18 +35,26 @@ class _HomeState extends State<Home> {
       body: ListView(
         children: [
           StreamBuilder(
-              builder: (content, data) {
-                if (data.hasError) {
-                  return Center(
-                    child: Text("data has error ${data.error}"),
-                  );
-                } else
-                  return Center(
-                    child: Text("Temp"),
-                  );
-              },
-              stream:
-                  UserDAO.usersColection.doc(MainData.user!.email).snapshots())
+            stream:
+                UserDAO.usersColection.doc(MainData.user!.email).snapshots(),
+            builder: (content, AsyncSnapshot<DocumentSnapshot> data) {
+              if (data.hasError || !data.hasData) {
+                return Center(
+                  child: Text("data has error ${data.error}"),
+                );
+              } else {
+                var _data = data.data!;
+                return Center(
+                  child: Column(
+                    children: [
+                      Text("Temp ${General.tryValueNotNull(_data, "temp")}"),
+                      Text("Date ${General.tryValueNotNull(_data, "time")}"),
+                    ],
+                  ),
+                );
+              }
+            },
+          ),
         ],
       ),
     );
