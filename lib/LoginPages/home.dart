@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:parent_check_app/controller/UserDAO.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -7,6 +9,21 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late Stream<DocumentSnapshot> str;
+  @override
+  void initState() {
+    super.initState();
+    listen();
+  }
+
+  listen() async {
+    str = UserDAO.usersColection.doc(MainData.user!.email).snapshots();
+    str.listen((event) {
+      event.get("temp");
+      event.get("date");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,12 +34,31 @@ class _HomeState extends State<Home> {
         title: Text("Home"),
       ),
       body: ListView(
-        children: [],
+        children: [
+          StreamBuilder(
+              builder: (content, data) {
+                if (data.hasError) {
+                  return Center(
+                    child: Text("data has error ${data.error}"),
+                  );
+                } else
+                  return Center(
+                    child: Text("Temp"),
+                  );
+              },
+              stream:
+                  UserDAO.usersColection.doc(MainData.user!.email).snapshots())
+        ],
       ),
     );
   }
 
   Future<void> pdo() async {
     print(await FirebaseMessaging.instance.getToken());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

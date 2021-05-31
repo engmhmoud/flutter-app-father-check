@@ -11,7 +11,11 @@ class UserDAO with ChangeNotifier {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static final FirebaseFirestore _store = FirebaseFirestore.instance;
   static final CollectionReference _usersColec = _store.collection("user");
-  static final CollectionReference _tempOfUserColec = _store.collection("data");
+  // static final CollectionReference _tempOfUserColec= _store.collection("te");
+
+  static CollectionReference get usersColection => _usersColec;
+
+  // CollectionReference get tempOfUserColection => _tempOfUserColec;
 
   User? _currentUser;
 
