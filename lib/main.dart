@@ -1,34 +1,32 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:parent_check_app/General/General.dart';
 import 'package:parent_check_app/LoginPages/Intro.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
-Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
-  General.infoAlert(
-      text: message.notification!.body,
-      title: message.notification!.title,
-      type: AlertType.info);
-}
+// Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   print("Handling a background message: ${message.messageId}");
+//   General.infoAlert(
+//       text: message.notification!.body,
+//       title: message.notification!.title,
+//       type: AlertType.info);
+// }
 
-initFirebase() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-}
+// initFirebase() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp();
+//   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+// }
 
 Future<void> allInt() async {
-  await initFirebase();
+  // await initFirebase();
   // Directory appDocDir = await getApplicationDocumentsDirectory();
   // String appDocPath = appDocDir.path;
   // Hive.init(appDocPath);
 }
 
 Future<void> main() async {
-  await initFirebase();
-  await Firebase.initializeApp();
+  // await initFirebase();
+  // await Firebase.initializeApp();
   runApp(MaterialApp(
     home: Intro(),
     debugShowCheckedModeBanner: false,
@@ -91,8 +89,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   Future<void> _incrementCounter() async {
-    var token = await FirebaseMessaging.instance.getToken();
-    print(token);
+    // var token = await FirebaseMessaging.instance.getToken();
+    // print(token);
   }
 
   @override

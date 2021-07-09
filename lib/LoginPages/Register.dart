@@ -1,17 +1,15 @@
 import 'dart:async';
 
-import 'package:connectivity/connectivity.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:parent_check_app/General//Constants.dart';
 import 'package:parent_check_app/General//Error/ErrorList.dart';
 import 'package:parent_check_app/General//General.dart';
 import 'package:parent_check_app/LoginPages/Intro.dart';
-
-import 'package:flutter/material.dart';
 import 'package:parent_check_app/LoginPages/login2.dart';
-import 'package:parent_check_app/Model/User.dart';
+import 'package:parent_check_app/Model/user.dart';
 import 'package:parent_check_app/controller/UserDAO.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:flutter/services.dart';
 
 class Register2 extends StatefulWidget {
   @override
@@ -19,9 +17,9 @@ class Register2 extends StatefulWidget {
 }
 
 class _Register2State extends State<Register2> {
+  TextEditingController _serialnumber = TextEditingController();
   TextEditingController _username = TextEditingController();
   TextEditingController _password = TextEditingController();
-  TextEditingController _id = TextEditingController();
   TextEditingController _email = TextEditingController();
 
   bool _isButtonDisabled = false;
@@ -156,7 +154,7 @@ class _Register2State extends State<Register2> {
                 strutStyle: strutStyle,
                 cursorWidth: 3,
                 cursorRadius: Radius.circular(3),
-                controller: _id,
+                controller: _serialnumber,
                 decoration: buildInputDecoration(
                   hintText: ("id"),
                   hintStyle: hintStyle,
@@ -197,6 +195,16 @@ class _Register2State extends State<Register2> {
   }
 
   Future<void> _register() async {
+    // var path = UserDAO.db!.path;
+    // var f = File.fromUri(Uri.file(path));
+    // print(UserDAO.db!.isOpen);
+    // await UserDAO.db!.close();
+
+    // print(await f.exists());
+
+    // await f.delete();
+    // return;
+
     if (_email.text == "" || _email.text == null) {
       General.infoAlert(title: ("Email is Required"), type: AlertType.warning);
     } else if (_password.text == "" || _password.text == null) {
@@ -212,19 +220,19 @@ class _Register2State extends State<Register2> {
     //   General.infoAlert(context,
     //       title:  ("image_required"), type: AlertType.warning);
     // }
-    else if ((await Connectivity().checkConnectivity()) ==
-        ConnectivityResult.none) {
-      General.showToast(ErrorList.noInternetConnection.myCase,
-          color: Constants.color_DANGER);
-      return;
-    } else {
+    // else if ((await Connectivity().checkConnectivity()) ==
+    //     ConnectivityResult.none) {
+    //   General.showToast(ErrorList.noInternetConnection.myCase,
+    //       color: Constants.color_DANGER);
+    //   return;
+    // }
+    else {
       UserDAO dao = UserDAO();
       User user = User(
-        email: _email.text,
-        password: _password.text,
         username: _username.text,
-        id: int.tryParse(_id.text),
-        firebaseUser: null,
+        email: _email.text,
+        serialnumber: double.parse(_serialnumber.text),
+        password: _password.text,
       );
       try {
         await dao.addUser(user);
@@ -258,21 +266,16 @@ class _Register2State extends State<Register2> {
       required TextStyle hintStyle,
       Widget? suffixIcon}) {
     double contPdValue = 10;
-    var contPadd = EdgeInsets.only(
-      left: contPdValue,
-      right: contPdValue,
-    );
+    var contPadd = EdgeInsets.only(left: contPdValue, right: contPdValue);
 
     return InputDecoration(
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Constants.color_INFO),
-        borderRadius: BorderRadius.circular(8),
-      ),
+          borderSide: BorderSide(color: Constants.color_INFO),
+          borderRadius: BorderRadius.circular(8)),
       enabledBorder: OutlineInputBorder(
-        borderSide:
-            BorderSide(color: Colors.lightGreen[50] ?? Constants.color_INFO),
-        borderRadius: BorderRadius.circular(8),
-      ),
+          borderSide:
+              BorderSide(color: Colors.lightGreen[50] ?? Constants.color_INFO),
+          borderRadius: BorderRadius.circular(8)),
       hintText: hintText,
       hintStyle: hintStyle,
       suffixIcon: suffixIcon ?? SizedBox(),

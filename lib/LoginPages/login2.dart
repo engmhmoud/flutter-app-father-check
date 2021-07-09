@@ -1,8 +1,6 @@
-import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:parent_check_app/General/Constants.dart';
-import 'package:parent_check_app/General/Error/ErrorList.dart';
 import 'package:parent_check_app/General/General.dart';
 import 'package:parent_check_app/controller/UserDAO.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -16,7 +14,7 @@ class Login2 extends StatefulWidget {
 }
 
 class _Login2State extends State<Login2> {
-  TextEditingController _email = TextEditingController();
+  TextEditingController _usernme = TextEditingController();
   TextEditingController _password = TextEditingController();
   bool _seen = false;
   bool _isButtonDisabled = false;
@@ -58,10 +56,10 @@ class _Login2State extends State<Login2> {
                 onSubmitted: (_) {
                   _login();
                 },
-                controller: _email,
+                controller: _usernme,
                 keyboardType: TextInputType.emailAddress,
                 style: textStyle,
-                decoration: buildInputDecoration(hintText: "Email"),
+                decoration: buildInputDecoration(hintText: "Username"),
               ),
             ),
           ),
@@ -122,35 +120,51 @@ class _Login2State extends State<Login2> {
   }
 
   Future<void> _login() async {
+    // var data = await UserDAO.db!.query("Select * from `users` ");
+    // print(data);
+    // var username = "mahmoud";
+    // var pass = "pass";
+    // var sql =
+    //     "Select * from `users` where  username  = '$username' and  password  = '$pass' ";
+    // var data = await UserDAO.db!.rawQuery(sql);
+    // var user = User.fromSnapshot(data.first);
+    // var sqlUpdate = "UPDATE users set password = 'pass'";
+    // print(user);
+    // print(UserDAO.db!.isOpen);
+
+    // return;
     // Navigator.pushReplacement(
     //     context, MaterialPageRoute(builder: (c) => Home()));
-    print("login trioed");
-    if (!_isButtonDisabled) if (_email.text == "" || _email.text == null) {
+    print("login tried");
+    if (!_isButtonDisabled) if (_usernme.text == "" || _usernme.text == null) {
       General.infoAlert(
-        title: ("Email is Required"),
+        title: ("Username is Required"),
         text: null,
         type: AlertType.info,
         // width: 100,
       );
-    } else if (_password.text == "" || _password.text == null) {
-      General.infoAlert(
-        title: ("Password is Required"),
-        text: null,
-        type: AlertType.info,
-        // width: 100
-      );
-    } else if ((await Connectivity().checkConnectivity()) ==
-        ConnectivityResult.none) {
-      General.showToast(ErrorList.noInternetConnection.myCase,
-          color: Constants.color_DANGER);
-      return;
-    } else {
+    }
+    //  else if (_password.text == "" || _password.text == null) {
+    //   General.infoAlert(
+    //     title: ("Password is Required"),
+    //     text: null,
+    //     type: AlertType.info,
+    //     // width: 100
+    //   );
+    // }
+    // else if ((await Connectivity().checkConnectivity()) ==
+    //     ConnectivityResult.none) {
+    //   General.showToast(ErrorList.noInternetConnection.myCase,
+    //       color: Constants.color_DANGER);
+    //   return;
+    // }
+    else {
       if (mounted)
         setState(() {
           _isButtonDisabled = true;
         });
       try {
-        await UserDAO().loginUser(email: _email.text, password: _password.text);
+        await UserDAO().getUser(_usernme.text, _password.text);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Home()));
       } on PlatformException catch (e) {

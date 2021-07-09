@@ -2,7 +2,6 @@ import 'package:after_layout/after_layout.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:parent_check_app/General/General.dart';
-
 import 'package:parent_check_app/LoginPages/home.dart';
 import 'package:parent_check_app/controller/UserDAO.dart';
 
@@ -102,14 +101,10 @@ class _IntroState extends State<Intro> with AfterLayoutMixin<Intro> {
     print("in login --------------------");
     UserDAO dao = UserDAO();
     // try {
-    dao.currentUser = await dao.getFireUser();
-    if (dao.currentUser == null)
+    dao.current = await dao.autoLogin();
+    if (dao.current == null)
       toPage(context, Login2());
     else
-      await dao.getUser();
-    if (MainData.user == null) {
-      toPage(context, Login2());
-    } else
       toPage(context, Home());
   }
 }

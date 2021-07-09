@@ -41,6 +41,8 @@ dependencies:
   future_progress_dialog: ^0.2.0
   flutter:
     sdk: flutter
+  sqflite: ^2.0.0+3
+  shared_preferences: ^2.0.6
   # path_provider: ^2.0.2
 dev_dependencies:
   flutter_test:
