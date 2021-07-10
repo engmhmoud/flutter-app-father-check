@@ -120,6 +120,8 @@ class _Login2State extends State<Login2> {
   }
 
   Future<void> _login() async {
+    // UserDAO().removeDB();
+    // return;
     // var data = await UserDAO.db!.query("Select * from `users` ");
     // print(data);
     // var username = "mahmoud";

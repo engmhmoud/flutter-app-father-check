@@ -1,6 +1,8 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:parent_check_app/General/General.dart';
+import 'package:parent_check_app/controller/UserDAO.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -24,35 +26,79 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        pdo();
-      }),
+      // floatingActionButton: FloatingActionButton(onPressed: () {
+      //   pdo();
+      // }),
       appBar: AppBar(
         title: Text("Home"),
       ),
       body: ListView(
         children: [
-          // StreamBuilder(
-          //   stream:
-          //       UserDAO.usersColection.doc(MainData.user!.email).snapshots(),
-          //   builder: (content, AsyncSnapshot<DocumentSnapshot> data) {
-          //     if (data.hasError || !data.hasData) {
-          //       return Center(
-          //         child: Text("data has error ${data.error}"),
-          //       );
-          //     } else {
-          //       var _data = data.data!;
-          //       return Center(
-          //         child: Column(
-          //           children: [
-          //             Text("Temp ${General.tryValueNotNull(_data, "temp")}"),
-          //             Text("Date ${General.tryValueNotNull(_data, "time")}"),
-          //           ],
-          //         ),
-          //       );
-          //     }
-          //   },
-          // ),
+          FutureBuilder(
+            future: UserDAO().getDate(
+              MainData.user!.username,
+              MainData.user!.id,
+            ),
+            builder: (content, data) {
+              if (data.hasError || !data.hasData) {
+                return Center(
+                  child: Text("data has error ${data.error}"),
+                );
+              } else {
+                List _data = data.data as List;
+                List<Widget> colItms = _data.map((user_log) {
+                  return Container(
+                    margin: EdgeInsets.only(bottom: 20),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          user_log.temp_degree.toString(),
+                        ),
+                        user_log.temp_degree >= 37
+                            ? ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.redAccent[200],
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 40, vertical: 15),
+                                    textStyle: TextStyle(
+                                        fontSize: 26,
+                                        fontWeight: FontWeight.bold)),
+                                onPressed: () {
+                                  General.showToast(
+                                      "Student Temperature is Grathere Than or equal  37 and he is blocked");
+                                },
+                                child: Container(
+                                  child: Text("Block"),
+                                ))
+                            : ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.greenAccent[200],
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 40, vertical: 15),
+                                    textStyle: TextStyle(
+                                        fontSize: 26,
+                                        fontWeight: FontWeight.bold)),
+                                onPressed: () {
+                                  General.showToast(
+                                      "Student Temperature is Good");
+                                },
+                                child: Container(
+                                  child: Text("Allow"),
+                                ))
+                      ],
+                    ),
+                  );
+                }).toList();
+                return Center(
+                  child: Column(
+                    children: colItms,
+                  ),
+                );
+              }
+            },
+          ),
         ],
       ),
     );

@@ -178,15 +178,32 @@
 //   //   await box.close();
 //   // }
 
+import 'dart:io';
+
 import 'package:parent_check_app/Model/user.dart';
+import 'package:parent_check_app/Model/user_log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 class UserDAO {
+  removeDB() async {
+    if (UserDAO.db == null) UserDAO.db = await UserDAO().openDB();
+    var path = UserDAO.db!.path;
+    var f = File.fromUri(Uri.file(path));
+    if (UserDAO.db != null || !UserDAO.db!.isOpen) await UserDAO.db!.close();
+    UserDAO.db!.close();
+    print(await f.exists());
+
+    await f.delete();
+    print(await f.exists());
+    return;
+  }
+
   static Database? db;
   User? current;
   Future<User?> autoLogin() async {
-    if (db == null) await openDB();
+    if (db == null) db = await openDB();
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var username = prefs.get("username");
     var password = prefs.get("password");
@@ -225,8 +242,8 @@ class UserDAO {
             "`temp_degree` text  ," +
             "`add_card` tinyint(1)  DEFAULT 0) ";
         var line6 = "INSERT INTO `users` (`id`, `username`, `password`, `serialnumber`, `gender`, `email`, `card_uid`, `card_select`, `user_date`, `device_uid`, `device_dep`, `temp_degree`, `add_card`) " +
-            "VALUES(1, 'None','', 0, 'None', 'None', '48237127165', 0, '2021-06-01', 'a7ec812d2bf1866b', 'test', '0', 0)," +
-            "(2, 'mahmoud', 4,'', 'Male', 'mo33@g', '205245171139', 0, '2021-06-01', 'a7ec812d2bf1866b', 'test', '30', 1)," +
+            "VALUES(1, 'abd allah','', 0, 'Male', 'None', '48237127165', 0, '2021-06-01', 'a7ec812d2bf1866b', 'test', '0', 0)," +
+            "(2, 'mahmoud','', 4, 'Male', 'mo33@g', '205245171139', 0, '2021-06-01', 'a7ec812d2bf1866b', 'test', '30', 1)," +
             "(3, 'mohamed ahmed','',3, 'Male', 'mo@g.com', '11251212219', 0, '2021-06-01', 'a7ec812d2bf1866b', 'test', '31', 1)," +
             "(4, 'ahmed','',2, 'Male', 'ahmed@g.com', '26137172139', 0, '2021-06-01', 'a7ec812d2bf1866b', 'test', '32', 1)," +
             "(5, 'yousef badr','', 1, 'Male', 'yousef.keto5523@gmail.com', '2115172139', 1, '2021-06-01', 'a7ec812d2bf1866b', 'test', '33', 1);";
@@ -271,7 +288,7 @@ class UserDAO {
         // await _db.execute(line15);
         // await _db.execute(line16);
         // await _db.execute(line17);
-      }, version: 5);
+      }, version: 7);
 
     return db;
   }
@@ -287,8 +304,10 @@ class UserDAO {
     User? user;
     var sql =
         "Select * from 'users' where  username  = '$username' and  password  = '$pass' ";
+    var sql2 = "Select * from 'users'   ";
     var res = await db?.rawQuery(sql);
-    if (res != null && res.length >= 0) {
+    // res.toList()
+    if (res != null && res.length > 0) {
       user = User.fromSnapshot(res.first);
       MainData.user = user;
     }
@@ -300,7 +319,13 @@ class UserDAO {
   }
 
 // }
+  Future<List<UserLog>> getDate(username, id) async {
+    var data = await db!.rawQuery(
+        "Select * from `users_logs` where username  = '$username' or  id  = '$id'");
 
+    var res = data.map((e) => UserLog.fromSnapshot(e));
+    return res.toList();
+  }
 }
 
 class MainData {
