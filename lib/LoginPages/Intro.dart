@@ -101,8 +101,8 @@ class _IntroState extends State<Intro> with AfterLayoutMixin<Intro> {
     print("in login --------------------");
     UserDAO dao = UserDAO();
     // try {
-    dao.current = await dao.autoLogin();
-    if (dao.current == null)
+    UserDAO.current = await dao.autoLogin();
+    if (UserDAO.current == null)
       toPage(context, Login2());
     else
       toPage(context, Home());

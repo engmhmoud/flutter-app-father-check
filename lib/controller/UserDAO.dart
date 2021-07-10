@@ -200,18 +200,17 @@ class UserDAO {
   }
 
   static Database? db;
-  User? current;
+  static User? current;
   Future<User?> autoLogin() async {
     if (db == null) db = await openDB();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var username = prefs.get("username");
     var password = prefs.get("password");
-    // if (username == null || password == null)
-    return null;
-    // else
-    {
-      // return (await getUser(username, password));
+    if (username == null || password == null || username == "")
+      return null;
+    else {
+      return (await getUser(username, password));
     }
   }
 
@@ -304,12 +303,12 @@ class UserDAO {
     User? user;
     var sql =
         "Select * from 'users' where  username  = '$username' and  password  = '$pass' ";
-    var sql2 = "Select * from 'users'   ";
+
     var res = await db?.rawQuery(sql);
     // res.toList()
     if (res != null && res.length > 0) {
       user = User.fromSnapshot(res.first);
-      MainData.user = user;
+      UserDAO.current = user;
     }
     return user;
   }
@@ -326,8 +325,4 @@ class UserDAO {
     var res = data.map((e) => UserLog.fromSnapshot(e));
     return res.toList();
   }
-}
-
-class MainData {
-  static User? user;
 }

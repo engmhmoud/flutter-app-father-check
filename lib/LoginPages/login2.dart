@@ -166,9 +166,14 @@ class _Login2State extends State<Login2> {
           _isButtonDisabled = true;
         });
       try {
-        await UserDAO().getUser(_usernme.text, _password.text);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Home()));
+        var user = await UserDAO().getUser(_usernme.text, _password.text);
+        if (user != null)
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => Home()));
+        else {
+          General.showToast("Username or password is wrong",
+              color: Constants.color_DANGER);
+        }
       } on PlatformException catch (e) {
         General.infoAlert(
             text: ("${e.code} ${e.details} ${e.message} ${e.stacktrace}"),

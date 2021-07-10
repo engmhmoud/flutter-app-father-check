@@ -24,7 +24,7 @@ Future<void> allInt() async {
   // Hive.init(appDocPath);
 }
 
-Future<void> main() async {
+main() {
   // await initFirebase();
   // await Firebase.initializeApp();
   runApp(MaterialApp(

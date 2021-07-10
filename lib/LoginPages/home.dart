@@ -36,8 +36,8 @@ class _HomeState extends State<Home> {
         children: [
           FutureBuilder(
             future: UserDAO().getDate(
-              MainData.user!.username,
-              MainData.user!.id,
+              UserDAO.current!.username,
+              UserDAO.current!.id,
             ),
             builder: (content, data) {
               if (data.hasError || !data.hasData) {
